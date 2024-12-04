@@ -1,0 +1,43 @@
+<mat-drawer-container>
+  <mat-drawer mode="side" opened>
+    <h5>Categories</h5>
+    <mat-selection-list (selectionChange)="onCategoryChange($event)" multiple="false">
+      @for (category of categories(); track category) {
+        <mat-list-option [value]="category">{{ category }}</mat-list-option>
+      }
+      <mat-list-option>all</mat-list-option>
+    </mat-selection-list>
+  </mat-drawer>
+
+  <mat-drawer-content>
+    <div class="products">
+      <div class="options">
+        <mat-form-field appearance="outline">
+          <mat-label>What are you looking for?</mat-label>
+          <input matInput placeholder="" (input)="onSearchInput($event)" [value]="searchMask()"/>
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Sort by</mat-label>
+          <mat-select (selectionChange)="onSortingOrderChange($event)" [value]="sortBy()">
+            <mat-option value="category">Category</mat-option>
+            <mat-option value="price">Price</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-button (click)="reset()">Reset</button>
+      </div>
+      <div class="list">
+        <mat-nav-list>
+          @for (product of productsByCriteria(); track product.id) {
+            <mat-list-item lines="3" routerLink="products/{{product.id}}">
+              <img matListItemAvatar src="{{product.image}}" alt="{{product.title}}"/>
+              <p matListItemTitle>{{ product.title }}</p>
+              <p matListItemLine>{{ product.description }}</p>
+              <p matListItemLine>{{ product.price }}$</p>
+            </mat-list-item>
+          }
+        </mat-nav-list>
+      </div>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>
